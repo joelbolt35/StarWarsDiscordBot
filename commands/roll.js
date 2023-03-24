@@ -1,12 +1,12 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder } = require('discord.js')
 
-const boostSymbols = ['', '', 'AA', 'A', 'SA', 'S'];
-const setbackSymbols = ['', '', 'F', 'F', 'T', 'T'];
-const abilitySymbols = ['', 'S', 'S', 'SS', 'A', 'A', 'SA', 'AA'];
-const difficultySymbols = ['', 'F', 'FF', 'T', 'T', 'T', 'TT', 'FT'];
-const proficiencySymbols = ['', 'S', 'S', 'SS', 'SS', 'A', 'SA', 'SA', 'SA', 'AA', 'AA', 'R'];
-const challengeSymbols = ['', 'F', 'F', 'FF', 'FF', 'T', 'T', 'FT', 'FT', 'TT', 'TT', 'E'];
-const forceSymbols = ['D', 'D', 'D', 'D', 'D', 'D', 'DD', 'L', 'L', 'LL', 'LL', 'LL'];
+const boostSymbols = ['', '', 'AA', 'A', 'SA', 'S']
+const setbackSymbols = ['', '', 'F', 'F', 'T', 'T']
+const abilitySymbols = ['', 'S', 'S', 'SS', 'A', 'A', 'SA', 'AA']
+const difficultySymbols = ['', 'F', 'FF', 'T', 'T', 'T', 'TT', 'FT']
+const proficiencySymbols = ['', 'S', 'S', 'SS', 'SS', 'A', 'SA', 'SA', 'SA', 'AA', 'AA', 'R']
+const challengeSymbols = ['', 'F', 'F', 'FF', 'FF', 'T', 'T', 'FT', 'FT', 'TT', 'TT', 'E']
+const forceSymbols = ['D', 'D', 'D', 'D', 'D', 'D', 'DD', 'L', 'L', 'LL', 'LL', 'LL']
 
 const diceSymbols = {
     '': ["Blank"],
@@ -26,7 +26,7 @@ const diceSymbols = {
     'TT': ["Threat", "Threat"],
     'DD': ["Dark", "Dark"],
     'LL': ["Light", "Light"]
-};
+}
 
 const dicePool = {
     'ability': abilitySymbols,
@@ -36,7 +36,7 @@ const dicePool = {
     'boost': boostSymbols,
     'setback': setbackSymbols,
     'force': forceSymbols
-};
+}
 
 let command = new SlashCommandBuilder()
     .setName('roll')
@@ -55,49 +55,68 @@ for (let diceType in dicePool) {
 module.exports = {
     data: command,
     async execute(interaction) {
-        await roll(interaction);
+        await roll(interaction)
     }
-};
+}
 
 // Define the symbols on the dice
 function rollDice(diceType, numDice) {
-    let result = [];
+    let result = []
     for (let i = 0; i < numDice; i++) {
         const die = dicePool[diceType]
         let dieRoll = die[Math.floor(Math.random() * die.length)]
-        result.push(dieRoll);
+        result.push(dieRoll)
     }
-    return result;
+    return result
 }
 
 function roll(interaction) {
-    let results = [];
-    let totals = new Proxy({}, {
-        get: function(obj, prop) {
-            return prop in obj ? obj[prop] : 0;
-        }
-    });
+    let results = []
+    let totals = object_zero_default()
 
     for (let diceType in dicePool) {
-        const numDice = interaction.options.getInteger(diceType);
-        if (numDice == null || numDice === 0) continue;
+        let totals_for_dice_type = object_zero_default()
+        const numDice = interaction.options.getInteger(diceType)
+        if (numDice == null || numDice === 0) continue
 
-        let rolls = rollDice(diceType, numDice); // returns an array of symbols for the dice roll results
+        let rolls = rollDice(diceType, numDice)
         rolls.forEach(symbol => {
             let values = diceSymbols[symbol]
             values.forEach(value => {
                 totals[value]++
             })
+
+            let key
+            if (values.length === 1) {
+                key = values[0]
+            } else if (values[0] === values[1]) {
+                key = `${values[0]} x2`
+            } else {
+                key = `${values[0]} + ${values[1]}`
+            }
+            totals_for_dice_type[key]++
         })
-        let result = `**${numDice} ${diceType} dice**: ${rolls.map(symbol => diceSymbols[symbol]).join(', ')}`; // formats the result
-        results.push(result) // collect the results
+        let output_format = []
+        for (const key in totals_for_dice_type) {
+            output_format.push(`${totals_for_dice_type[key]} ${key}`)
+        }
+        let result = `**${numDice} ${diceType} dice**: ${output_format.join(', ')}`
+        results.push(result)
     }
 
     if (results.length === 0) {
         return interaction.reply({
             content: 'You must select at least one dice to roll!',
             ephemeral: true
-        });
+        })
     }
-    interaction.reply(`**You rolled**\n${results.join('\n')}\n**Totals**: ${JSON.stringify(totals, null, 2)}`);
+    interaction.reply(`**You rolled**\n${results.join('\n')}\n**Totals**: ${JSON.stringify(totals, null, 2)}`)
+}
+
+function object_zero_default() {
+    return new Proxy({}, {
+        get: function(obj, prop) {
+            return prop in obj ? obj[prop] : 0
+        }
+    })
 }
