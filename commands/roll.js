@@ -38,27 +38,6 @@ const dicePool = {
     'force': forceSymbols
 }
 
-let command = new SlashCommandBuilder()
-    .setName('roll')
-    .setDescription('Roll one or more dice')
-let diceTypeOptions = []
-for (let diceType in dicePool) {
-    diceTypeOptions.push({ name: diceType, value: diceType })
-}
-
-for (let diceType in dicePool) {
-    command.addIntegerOption(option =>
-        option.setName(diceType)
-            .setDescription(`Roll ${diceType} dice`))
-}
-
-module.exports = {
-    data: command,
-    async execute(interaction) {
-        await roll(interaction)
-    }
-}
-
 // Define the symbols on the dice
 function rollDice(diceType, numDice) {
     let result = []
@@ -119,4 +98,25 @@ function object_zero_default() {
             return prop in obj ? obj[prop] : 0
         }
     })
+}
+
+// Create Slash Command
+function createCommand() {
+    let command = new SlashCommandBuilder()
+        .setName('roll')
+        .setDescription('Roll one or more dice')
+    for (let diceType in dicePool) {
+        command.addIntegerOption(option =>
+            option.setName(diceType)
+                .setDescription(`Roll ${diceType} dice`))
+    }
+    return command
+}
+
+// Export Slash Command to send to Server
+module.exports = {
+    data: createCommand(),
+    async execute(interaction) {
+        await roll(interaction)
+    }
 }
