@@ -38,6 +38,16 @@ const dicePool = {
   'force': forceSymbols
 }
 
+const diceColor = {
+  'ability': ['GREEN', '\u001b[0;32m'],
+  'proficiency': ['YELLOW', '\u001b[0;33m'],
+  'difficulty': ['PURPLE', '\u001b[0;35m'],
+  'challenge': ['RED', '\u001b[0;31m'],
+  'boost': ['BLUE', '\u001b[0;34m'],
+  'setback': ['BLACK', '\u001b[0;30m'],
+  'force': ['WHITE', '\u001b[0;37m']
+}
+
 async function execute(interaction) {
   let results = []
   let totals = objectZeroDefault()
@@ -68,7 +78,9 @@ async function execute(interaction) {
     for (const key in totalsForDiceType) {
       outputFormat.push(`${totalsForDiceType[key]} ${key}`)
     }
-    let result = {name:`${numDice} ${diceType} dice`, value: outputFormat.join(', ')}
+    let result = {
+      name:`${numDice} ${diceType} dice (${diceColor[diceType][0]})`,
+      value: "```ansi\n"+diceColor[diceType][1] + outputFormat.join('\n') + "```"}
     results.push(result)
   }
 
