@@ -1,4 +1,4 @@
-const {SlashCommandBuilder} = require('discord.js')
+const {SlashCommandBuilder, EmbedBuilder} = require('discord.js')
 
 const boostSymbols = ['', '', 'AA', 'A', 'SA', 'S']
 const setbackSymbols = ['', '', 'F', 'F', 'T', 'T']
@@ -68,17 +68,33 @@ async function execute(interaction) {
     for (const key in totalsForDiceType) {
       outputFormat.push(`${totalsForDiceType[key]} ${key}`)
     }
-    let result = `**${numDice} ${diceType} dice**: ${outputFormat.join(', ')}`
+    let result = {name:`${numDice} ${diceType} dice`, value: outputFormat.join(', ')}
     results.push(result)
   }
 
   if (results.length === 0) {
+    const embed = new EmbedBuilder()
+      .setColor("DarkRed")
+      .setTitle("You must select at least one dice to roll!")
+
     return interaction.reply({
-      content: 'You must select at least one dice to roll!',
+      embeds: [embed],
       ephemeral: true
     })
   }
-  interaction.reply(`**You rolled**\n${results.join('\n')}\n**Totals**: ${JSON.stringify(totals, null, 2)}`)
+
+  const embed = new EmbedBuilder()
+    .setColor("DarkBlue")
+    .setTitle(`Here's the role!`)
+  results.forEach(result => embed.addFields(result))
+
+  const embed2 = new EmbedBuilder()
+    .setColor("DarkBlue")
+    .setTitle(`Total of each Symbol`)
+  for (const symbol in totals) {
+    embed2.addFields({name: symbol, value: totals[symbol].toString(), inline: true})
+  }
+  return interaction.reply({embeds: [embed, embed2]})
 }
 
 // Define the symbols on the dice
