@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js')
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder } = require('discord.js')
 const { Character } = require('../db')
 
 async function execute(interaction) {
@@ -13,11 +13,11 @@ async function execute(interaction) {
         embed.addFields({ name: character.name, value: `Credits: ${character.credits}` })
     })
 
-    return interaction.reply({ embeds: [embed] });
+    return interaction.reply({ embeds: [embed] })
 }
 
 // Create Slash Command
-function createCommand() {
+async function createCommand() {
     return new SlashCommandBuilder()
         .setName('list-characters')
         .setDescription('List all Characters')
@@ -25,6 +25,8 @@ function createCommand() {
 
 // Export Slash Command to send to Server
 module.exports = {
-    data: createCommand(),
+    async data() {
+        return await createCommand()
+    },
     execute
 }

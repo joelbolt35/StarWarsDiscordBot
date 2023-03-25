@@ -1,10 +1,10 @@
 const { SlashCommandBuilder } = require('discord.js')
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder } = require('discord.js')
 const { Character } = require('../db')
 
 async function execute(interaction) {
     const characterName = interaction.options.getString("name")
-    const foundCharacter = await Character.findOne({ name: characterName });
+    const foundCharacter = await Character.findOne({ name: characterName })
 
     if (foundCharacter) {
         const embed = new EmbedBuilder()
@@ -13,7 +13,7 @@ async function execute(interaction) {
             .setDescription(`Found Character with the name "${characterName}"`)
             .addFields({ name: 'Credits', value: foundCharacter.credits.toString() })
 
-        return interaction.reply({ embeds: [embed], ephemeral: true });
+        return interaction.reply({ embeds: [embed], ephemeral: true })
     }
 
     const character = new Character({ name: characterName, credits: 0 })
@@ -25,11 +25,11 @@ async function execute(interaction) {
         .addFields({ name: 'Name', value: characterName, inline: true  })
         .addFields({ name: 'Credits', value: character.credits.toString(), inline: true  })
 
-    return interaction.reply({ embeds: [embed] });
+    return interaction.reply({ embeds: [embed] })
 }
 
 // Create Slash Command
-function createCommand() {
+async function createCommand() {
     return new SlashCommandBuilder()
         .setName('add-character')
         .setDescription('Add a new Character')
@@ -38,6 +38,8 @@ function createCommand() {
 
 // Export Slash Command to send to Server
 module.exports = {
-    data: createCommand(),
+    async data() {
+        return await createCommand()
+    },
     execute
 }

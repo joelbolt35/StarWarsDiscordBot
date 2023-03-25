@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js')
 
-function performCommand(interaction) {
+function execute(interaction) {
     let option1 = interaction.options.getInteger("option1")
     let option2 = interaction.options.getInteger("option2")
 
@@ -14,7 +14,7 @@ function performCommand(interaction) {
 }
 
 // Create Slash Command
-function createCommand() {
+async function createCommand() {
     return new SlashCommandBuilder()
         .setName('example')
         .setDescription('example description')
@@ -24,8 +24,8 @@ function createCommand() {
 
 // Export Slash Command to send to Server
 module.exports = {
-    data: createCommand(),
-    async execute(interaction) {
-        await performCommand(interaction)
-    }
+    async data() {
+        return await createCommand()
+    },
+    execute
 }

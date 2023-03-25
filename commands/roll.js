@@ -38,18 +38,7 @@ const dicePool = {
     'force': forceSymbols
 }
 
-// Define the symbols on the dice
-function rollDice(diceType, numDice) {
-    let result = []
-    for (let i = 0; i < numDice; i++) {
-        const die = dicePool[diceType]
-        let dieRoll = die[Math.floor(Math.random() * die.length)]
-        result.push(dieRoll)
-    }
-    return result
-}
-
-function roll(interaction) {
+async function execute(interaction) {
     let results = []
     let totals = objectZeroDefault()
 
@@ -92,6 +81,17 @@ function roll(interaction) {
     interaction.reply(`**You rolled**\n${results.join('\n')}\n**Totals**: ${JSON.stringify(totals, null, 2)}`)
 }
 
+// Define the symbols on the dice
+function rollDice(diceType, numDice) {
+    let result = []
+    for (let i = 0; i < numDice; i++) {
+        const die = dicePool[diceType]
+        let dieRoll = die[Math.floor(Math.random() * die.length)]
+        result.push(dieRoll)
+    }
+    return result
+}
+
 function objectZeroDefault() {
     return new Proxy({}, {
         get: function(obj, prop) {
@@ -101,7 +101,7 @@ function objectZeroDefault() {
 }
 
 // Create Slash Command
-function createCommand() {
+async function createCommand() {
     let command = new SlashCommandBuilder()
         .setName('roll')
         .setDescription('Roll one or more dice')
@@ -115,8 +115,8 @@ function createCommand() {
 
 // Export Slash Command to send to Server
 module.exports = {
-    data: createCommand(),
-    async execute(interaction) {
-        await roll(interaction)
-    }
+    async data() {
+        return await createCommand()
+    },
+    execute
 }
