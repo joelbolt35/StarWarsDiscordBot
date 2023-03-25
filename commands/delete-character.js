@@ -12,24 +12,20 @@ async function execute(interaction, client) {
   const characterName = interaction.options.getString("name")
   const foundCharacter = await Character.findOne({name: characterName})
 
-  if (foundCharacter) {
+  if (!foundCharacter) {
     const embed = new EmbedBuilder()
       .setColor("DarkRed")
-      .setTitle(`Character Already Exists`)
-      .setDescription(`Found Character with the name "${characterName}"`)
-      .addFields({name: 'Credits', value: foundCharacter.credits.toString()})
+      .setTitle(`Character Does not Exist!`)
+      .setDescription(`Could not find Character with the name "${characterName}"`)
 
-    return interaction.editReply({embeds: [embed]})
+    return await interaction.editReply({embeds: [embed]});
   }
-
-  const character = new Character({name: characterName, credits: 0})
-  await character.save()
+  await foundCharacter.deleteOne()
 
   const embed = new EmbedBuilder()
     .setColor("Blue")
-    .setTitle(`New Character Created!`)
+    .setTitle(`Character Deleted!`)
     .addFields({name: 'Name', value: characterName, inline: true})
-    .addFields({name: 'Credits', value: character.credits.toString(), inline: true})
 
   // Update all the commands by re-registering them with Discord's API
   const commands = await rest.get(Routes.applicationGuildCommands(process.env.APP_ID, process.env.GUILD_ID))
@@ -52,15 +48,20 @@ async function execute(interaction, client) {
     }
   }
 
-  return interaction.editReply({embeds: [embed]})
+  await interaction.editReply({embeds: [embed]});
 }
 
 // Create Slash Command
 async function createCommand() {
+  const characters = await Character.find()
   return new SlashCommandBuilder()
-    .setName('add-character')
-    .setDescription('Add a new Character')
-    .addStringOption(option => option.setName("name").setDescription("The name of the character").setRequired(true))
+    .setName('delete-character')
+    .setDescription('Delete a Character')
+    .addStringOption(option => {
+      option.setName("name").setDescription("The name of the character").setRequired(true)
+      characters.forEach(character => option.addChoices({name: character.name, value: character.name}))
+      return option
+    })
 }
 
 // Export Slash Command to send to Server

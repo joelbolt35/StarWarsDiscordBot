@@ -32,7 +32,12 @@
     if (!command) return
 
     try {
-      await command.execute(interaction)
+      const { execute } = command;
+      if (execute.length === 2) {
+        await execute(interaction, client)
+      } else {
+        await execute(interaction)
+      }
     } catch (error) {
       console.error(error)
       if (interaction.replied || interaction.deferred) {
