@@ -1,6 +1,7 @@
 require("dotenv").config();
 
 const { REST, Routes } = require('discord.js');
+const { mongoose } = require('./db')
 
 const fs = require('node:fs');
 const path = require('node:path');
@@ -36,3 +37,5 @@ const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
         console.error(error);
     }
 })();
+
+mongoose.connection.close()

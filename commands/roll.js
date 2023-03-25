@@ -51,10 +51,10 @@ function rollDice(diceType, numDice) {
 
 function roll(interaction) {
     let results = []
-    let totals = object_zero_default()
+    let totals = objectZeroDefault()
 
     for (let diceType in dicePool) {
-        let totals_for_dice_type = object_zero_default()
+        let totalsForDiceType = objectZeroDefault()
         const numDice = interaction.options.getInteger(diceType)
         if (numDice == null || numDice === 0) continue
 
@@ -73,13 +73,13 @@ function roll(interaction) {
             } else {
                 key = `${values[0]} + ${values[1]}`
             }
-            totals_for_dice_type[key]++
+            totalsForDiceType[key]++
         })
-        let output_format = []
-        for (const key in totals_for_dice_type) {
-            output_format.push(`${totals_for_dice_type[key]} ${key}`)
+        let outputFormat = []
+        for (const key in totalsForDiceType) {
+            outputFormat.push(`${totalsForDiceType[key]} ${key}`)
         }
-        let result = `**${numDice} ${diceType} dice**: ${output_format.join(', ')}`
+        let result = `**${numDice} ${diceType} dice**: ${outputFormat.join(', ')}`
         results.push(result)
     }
 
@@ -92,7 +92,7 @@ function roll(interaction) {
     interaction.reply(`**You rolled**\n${results.join('\n')}\n**Totals**: ${JSON.stringify(totals, null, 2)}`)
 }
 
-function object_zero_default() {
+function objectZeroDefault() {
     return new Proxy({}, {
         get: function(obj, prop) {
             return prop in obj ? obj[prop] : 0

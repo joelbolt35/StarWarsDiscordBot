@@ -50,8 +50,6 @@ client.login(process.env.DISCORD_TOKEN)
 
 // when your bot is shutting down, close the database connection
 process.on('SIGINT', () => {
-    mongoose.connection.close(() => {
-        console.log('Mongoose connection closed')
-        process.exit(0)
-    })
+    mongoose.connection.close()
+    console.log('Mongoose connection closed')
 })

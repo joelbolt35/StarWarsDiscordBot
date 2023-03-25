@@ -1,10 +1,10 @@
 const { SlashCommandBuilder } = require('discord.js')
 
 function performCommand(interaction) {
-    let option_1 = interaction.options.getInteger("option1")
-    let option_2 = interaction.options.getInteger("option2")
+    let option1 = interaction.options.getInteger("option1")
+    let option2 = interaction.options.getInteger("option2")
 
-    if (option_1 === 0 || option_2 === 0) {
+    if (option1 === 0 || option2 === 0) {
         return interaction.reply({
             content: 'Cannot select 0',
             ephemeral: true
@@ -12,7 +12,6 @@ function performCommand(interaction) {
     }
     interaction.reply(`You didn't select 0! Nice!`)
 }
-
 
 // Create Slash Command
 function createCommand() {
