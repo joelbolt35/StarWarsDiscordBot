@@ -8,13 +8,13 @@ const proficiencySymbols = ['', 'S', 'S', 'SS', 'SS', 'A', 'SA', 'SA', 'SA', 'AA
 const challengeSymbols = ['', 'F', 'F', 'FF', 'FF', 'T', 'T', 'FT', 'FT', 'TT', 'TT', 'E']
 const forceSymbols = ['D', 'D', 'D', 'D', 'D', 'D', 'DD', 'L', 'L', 'LL', 'LL', 'LL']
 
-const ABILITY = 'green (ability)'
-const PROFICIENCY = 'yellow (proficiency)'
-const DIFFICULTY = 'red (challenge)'
-const CHALLENGE = 'green (ability)'
-const BOOST = 'blue (boost)'
-const SETBACK = 'black (setback)'
-const FORCE = 'white (force)'
+const ABILITY = 'green(ability)'
+const PROFICIENCY = 'yellow(proficiency)'
+const DIFFICULTY = 'red(challenge)'
+const CHALLENGE = 'green(ability)'
+const BOOST = 'blue(boost)'
+const SETBACK = 'black(setback)'
+const FORCE = 'white(force)'
 
 const diceSymbols = {
   '': ["Blank"],
