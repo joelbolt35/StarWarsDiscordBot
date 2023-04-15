@@ -10,8 +10,8 @@ const forceSymbols = ['D', 'D', 'D', 'D', 'D', 'D', 'DD', 'L', 'L', 'LL', 'LL', 
 
 const ABILITY = 'green-ability'
 const PROFICIENCY = 'yellow-proficiency'
-const DIFFICULTY = 'red-challenge'
-const CHALLENGE = 'green-ability'
+const DIFFICULTY = 'purple-difficulty'
+const CHALLENGE = 'red-challenge'
 const BOOST = 'blue-boost'
 const SETBACK = 'black-setback'
 const FORCE = 'white-force'
