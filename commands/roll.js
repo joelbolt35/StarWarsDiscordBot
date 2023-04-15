@@ -8,6 +8,14 @@ const proficiencySymbols = ['', 'S', 'S', 'SS', 'SS', 'A', 'SA', 'SA', 'SA', 'AA
 const challengeSymbols = ['', 'F', 'F', 'FF', 'FF', 'T', 'T', 'FT', 'FT', 'TT', 'TT', 'E']
 const forceSymbols = ['D', 'D', 'D', 'D', 'D', 'D', 'DD', 'L', 'L', 'LL', 'LL', 'LL']
 
+const ABILITY = 'green (ability)'
+const PROFICIENCY = 'yellow (proficiency)'
+const DIFFICULTY = 'red (challenge)'
+const CHALLENGE = 'green (ability)'
+const BOOST = 'blue (boost)'
+const SETBACK = 'black (setback)'
+const FORCE = 'white (force)'
+
 const diceSymbols = {
   '': ["Blank"],
   'S': ["Success"],
@@ -28,25 +36,23 @@ const diceSymbols = {
   'LL': ["Light", "Light"]
 }
 
-const dicePool = {
-  'ability': abilitySymbols,
-  'proficiency': proficiencySymbols,
-  'difficulty': difficultySymbols,
-  'challenge': challengeSymbols,
-  'boost': boostSymbols,
-  'setback': setbackSymbols,
-  'force': forceSymbols
-}
+const dicePool = {}
+dicePool[ABILITY] = abilitySymbols
+dicePool[PROFICIENCY] = proficiencySymbols
+dicePool[DIFFICULTY] = difficultySymbols
+dicePool[CHALLENGE] = challengeSymbols
+dicePool[BOOST] = boostSymbols
+dicePool[SETBACK] = setbackSymbols
+dicePool[FORCE] = forceSymbols
 
-const diceColor = {
-  'ability': ['GREEN', '\u001b[0;32m'],
-  'proficiency': ['YELLOW', '\u001b[0;33m'],
-  'difficulty': ['PURPLE', '\u001b[0;35m'],
-  'challenge': ['RED', '\u001b[0;31m'],
-  'boost': ['BLUE', '\u001b[0;34m'],
-  'setback': ['BLACK', '\u001b[0;30m'],
-  'force': ['WHITE', '\u001b[0;37m']
-}
+const diceColor = {}
+diceColor[ABILITY] = ['GREEN', '\u001b[0;32m']
+diceColor[PROFICIENCY] = ['YELLOW', '\u001b[0;33m']
+diceColor[DIFFICULTY] = ['PURPLE', '\u001b[0;35m']
+diceColor[CHALLENGE] = ['RED', '\u001b[0;31m']
+diceColor[BOOST] = ['BLUE', '\u001b[0;34m']
+diceColor[SETBACK] = ['BLACK', '\u001b[0;30m']
+diceColor[FORCE] = ['WHITE', '\u001b[0;37m']
 
 async function execute(interaction) {
   let results = []
