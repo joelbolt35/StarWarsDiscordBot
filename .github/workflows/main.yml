@@ -14,6 +14,6 @@ jobs:
 
     - name: Deploy to DigitalOcean
       run: |
-        ssh -o StrictHostKeyChecking=no root@157.230.86.100 "cd ~/StarWarsDiscordBot && git pull origin master && pm2 restart index.js"
+        ssh -o StrictHostKeyChecking=no deploy@157.230.86.100 "cd ~/StarWarsDiscordBot && git pull origin master && pm2 restart index.js"
       env:
         PRIVATE_KEY: ${{ secrets.DROPLET_SSH_PRIVATE_KEY }}
