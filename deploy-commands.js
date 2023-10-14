@@ -25,6 +25,7 @@
       commands.push(commandData.toJSON())
     }
 
+    // log the commands to the console
     console.log(`Started refreshing ${commands.length} application (/) commands.`)
 
     // The put method is used to fully refresh all commands in the guild with the current set

@@ -1,0 +1,19 @@
+name: Deploy Discord Bot
+
+on:
+  push:
+    branches:
+      - master # replace with the branch name you want to watch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Deploy to DigitalOcean
+      run: |
+        ssh -o StrictHostKeyChecking=no deploy@157.230.86.100 "cd ~/StarWarsDiscordBot && git pull origin master && pm2 restart index.js"
+      env:
+        PRIVATE_KEY: ${{ secrets.DROPLET_SSH_PRIVATE_KEY }}
