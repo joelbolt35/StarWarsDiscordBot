@@ -60,6 +60,7 @@ async function execute(interaction) {
     let rolls = rollDice(diceType, numDice)
     rolls.forEach(symbol => {
       let values = diceSymbols[symbol]
+
       values.forEach(value => {
         totals[value]++
       })
@@ -84,6 +85,33 @@ async function execute(interaction) {
     results.push(result)
   }
 
+  // Do math for ACTUAL totals
+  let actualTotals = objectZeroDefault()
+  if (totals['Success'] > totals['Failure']) {
+    actualTotals['Net Success'] = totals['Success'] - totals['Failure']
+  } else {
+    actualTotals['Net Failure'] = totals['Failure'] - totals['Success']
+  }
+
+  if (totals['Advantage'] > totals['Threat']) {
+    actualTotals['Net Advantage'] = totals['Advantage'] - totals['Threat']
+  } else {
+    actualTotals['Net Threat'] = totals['Threat'] - totals['Advantage']
+  }
+
+  if (totals['Triumph'] > totals['Despair']) {
+    actualTotals['Net Triumph'] = totals['Triumph'] - totals['Despair']
+  } else {
+    actualTotals['Net Despair'] = totals['Despair'] - totals['Triumph']
+  }
+
+  // Remove 0s
+  for (const symbol in actualTotals) {
+    if (actualTotals[symbol] === 0) {
+      delete actualTotals[symbol]
+    }
+  }
+
   if (results.length === 0) {
     const embed = new EmbedBuilder()
       .setColor("DarkRed")
@@ -102,9 +130,9 @@ async function execute(interaction) {
 
   const embed2 = new EmbedBuilder()
     .setColor("DarkBlue")
-    .setTitle(`Total of each Symbol`)
-  for (const symbol in totals) {
-    embed2.addFields({name: symbol, value: totals[symbol].toString(), inline: true})
+    .setTitle(`Net Total of each Symbol`)
+  for (const symbol in actualTotals) {
+    embed2.addFields({name: symbol, value: actualTotals[symbol].toString(), inline: true})
   }
   return interaction.reply({embeds: [embed, embed2]})
 }
