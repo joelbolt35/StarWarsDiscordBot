@@ -111,6 +111,9 @@ async function execute(interaction) {
     actualTotals['Net Despair'] = totals['Despair'] - totals['Triumph']
   }
 
+  actualTotals['Light'] = totals['Light']
+  actualTotals['Dark'] = totals['Dark']
+
   // Remove 0s
   for (const symbol in actualTotals) {
     if (actualTotals[symbol] === 0) {
