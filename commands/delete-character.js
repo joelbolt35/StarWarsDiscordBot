@@ -1,16 +1,16 @@
 require("dotenv").config()
-const {SlashCommandBuilder} = require('discord.js')
-const {EmbedBuilder} = require('discord.js')
-const {Character} = require('../db')
-const {REST, Routes} = require('discord.js')
+const { SlashCommandBuilder } = require('discord.js')
+const { EmbedBuilder } = require('discord.js')
+const { Character } = require('../db')
+const { REST, Routes } = require('discord.js')
 
 // Construct and prepare an instance of the REST module
-const rest = new REST({version: '10'}).setToken(process.env.DISCORD_TOKEN)
+const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN)
 
 async function execute(interaction, client) {
   await interaction.deferReply();
   const characterName = interaction.options.getString("name")
-  const foundCharacter = await Character.findOne({name: characterName})
+  const foundCharacter = await Character.findOne({ name: characterName })
 
   if (!foundCharacter) {
     const embed = new EmbedBuilder()
@@ -18,14 +18,14 @@ async function execute(interaction, client) {
       .setTitle(`Character Does not Exist!`)
       .setDescription(`Could not find Character with the name "${characterName}"`)
 
-    return await interaction.editReply({embeds: [embed]});
+    return await interaction.editReply({ embeds: [embed] });
   }
   await foundCharacter.deleteOne()
 
   const embed = new EmbedBuilder()
     .setColor("Blue")
     .setTitle(`Character Deleted!`)
-    .addFields({name: 'Name', value: characterName, inline: true})
+    .addFields({ name: 'Name', value: characterName, inline: true })
 
   // Update all the commands by re-registering them with Discord's API
   const commands = await rest.get(Routes.applicationGuildCommands(process.env.APP_ID, process.env.GUILD_ID))
@@ -43,12 +43,12 @@ async function execute(interaction, client) {
     if (existingCommand) {
       await rest.patch(
         Routes.applicationGuildCommand(process.env.APP_ID, process.env.GUILD_ID, existingCommand.id),
-        {body: commandData.toJSON()}
+        { body: commandData.toJSON() }
       )
     }
   }
 
-  await interaction.editReply({embeds: [embed]});
+  await interaction.editReply({ embeds: [embed] });
 }
 
 // Create Slash Command
@@ -59,7 +59,7 @@ async function createCommand() {
     .setDescription('Delete a Character')
     .addStringOption(option => {
       option.setName("name").setDescription("The name of the character").setRequired(true)
-      characters.forEach(character => option.addChoices({name: character.name, value: character.name}))
+      characters.forEach(character => option.addChoices({ name: character.name, value: character.name }))
       return option
     })
 }

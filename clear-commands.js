@@ -1,9 +1,9 @@
 (async () => {
   require("dotenv").config()
-  const {REST, Routes} = require('discord.js')
+  const { REST, Routes } = require('discord.js')
 
   // Construct and prepare an instance of the REST module
-  const rest = new REST({version: '10'}).setToken(process.env.DISCORD_TOKEN)
+  const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN)
 
   try {
     const commands = await rest.get(Routes.applicationGuildCommands(process.env.APP_ID, process.env.GUILD_ID))

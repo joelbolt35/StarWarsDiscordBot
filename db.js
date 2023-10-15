@@ -14,12 +14,12 @@ mongoose.connect(`mongodb+srv://${process.env.MONGO_HOSTNAME}/${process.env.MONG
 
 // Define a schema for the Characters collection
 const characterSchema = new mongoose.Schema({
-  name: {type: String, required: true},
-  credits: {type: Number, required: true}
-}, {collection: process.env.CHARACTERS_COLLECTION})
+  name: { type: String, required: true },
+  credits: { type: Number, required: true }
+}, { collection: process.env.CHARACTERS_COLLECTION })
 
 // Create a model for the Characters collection
 const Character = mongoose.model('Character', characterSchema)
 
 // export the connection and model
-module.exports = {mongoose, Character}
+module.exports = { mongoose, Character }

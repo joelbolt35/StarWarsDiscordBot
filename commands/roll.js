@@ -1,4 +1,4 @@
-const {SlashCommandBuilder, EmbedBuilder} = require('discord.js')
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js')
 
 const boostSymbols = ['', '', 'AA', 'A', 'SA', 'S']
 const setbackSymbols = ['', '', 'F', 'F', 'T', 'T']
@@ -86,8 +86,9 @@ async function execute(interaction) {
       outputFormat.push(`${totalsForDiceType[key]} ${key}`)
     }
     let result = {
-      name:`${numDice} ${diceType} dice (${diceColor[diceType][0]})`,
-      value: "```ansi\n"+diceColor[diceType][1] + outputFormat.join('\n') + "```"}
+      name: `${numDice} ${diceType} dice (${diceColor[diceType][0]})`,
+      value: "```ansi\n" + diceColor[diceType][1] + outputFormat.join('\n') + "```"
+    }
     results.push(result)
   }
 
@@ -141,9 +142,9 @@ async function execute(interaction) {
     .setColor("DarkBlue")
     .setTitle(`Net Total of each Symbol`)
   for (const symbol in actualTotals) {
-    embed2.addFields({name: symbol, value: actualTotals[symbol].toString(), inline: true})
+    embed2.addFields({ name: symbol, value: actualTotals[symbol].toString(), inline: true })
   }
-  return interaction.reply({embeds: [embed, embed2]})
+  return interaction.reply({ embeds: [embed, embed2] })
 }
 
 // Define the symbols on the dice

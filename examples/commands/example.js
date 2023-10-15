@@ -1,4 +1,4 @@
-const {SlashCommandBuilder} = require('discord.js')
+const { SlashCommandBuilder } = require('discord.js')
 
 function execute(interaction) {
   let option1 = interaction.options.getInteger("option1")
