@@ -106,11 +106,8 @@ async function execute(interaction) {
     actualTotals['Net Threat'] = totals['Threat'] - totals['Advantage']
   }
 
-  if (totals['Triumph'] > totals['Despair']) {
-    actualTotals['Net Triumph'] = totals['Triumph'] - totals['Despair']
-  } else {
-    actualTotals['Net Despair'] = totals['Despair'] - totals['Triumph']
-  }
+  actualTotals['Net Triumph'] = totals['Triumph']
+  actualTotals['Net Despair'] = totals['Despair']
 
   actualTotals['Light'] = totals['Light']
   actualTotals['Dark'] = totals['Dark']
